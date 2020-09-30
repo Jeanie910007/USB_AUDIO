@@ -1,0 +1,5 @@
+audio_application.c:69:6:CCA02M1_AUDIO_IN_HalfTransfer_CallBack	16	static
+audio_application.c:79:6:CCA02M1_AUDIO_IN_TransferComplete_CallBack	16	static
+audio_application.c:93:6:AudioProcess	8	static
+audio_application.c:107:6:Init_Acquisition_Peripherals	24	static
+audio_application.c:126:6:Start_Acquisition	8	static
