@@ -31,6 +31,7 @@ Src/system_stm32f4xx.o: ../Src/system_stm32f4xx.c \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
@@ -98,6 +99,8 @@ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_H
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
+
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h:
 

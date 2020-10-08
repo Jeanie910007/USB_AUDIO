@@ -1,0 +1,10 @@
+usbd_audio_if.c:80:15:Audio_Init	24	static
+usbd_audio_if.c:94:15:Audio_DeInit	16	static
+usbd_audio_if.c:103:15:Audio_Record	4	static
+usbd_audio_if.c:117:15:Audio_VolumeCtl	24	static
+usbd_audio_if.c:138:15:Audio_MuteCtl	16	static
+usbd_audio_if.c:149:15:Audio_Stop	4	static
+usbd_audio_if.c:164:15:Audio_Pause	4	static
+usbd_audio_if.c:175:15:Audio_Resume	4	static
+usbd_audio_if.c:186:15:Audio_CommandMgr	16	static
+usbd_audio_if.c:200:6:Send_Audio_to_USB	16	static

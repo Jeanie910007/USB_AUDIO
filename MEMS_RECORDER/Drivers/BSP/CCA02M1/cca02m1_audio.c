@@ -2314,7 +2314,7 @@ void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
       break;
     }
     
-  case 2:
+  case 2: //PDM Signal
     {      
       uint16_t * DataTempI2S = &(I2S_InternalBuffer[AudioInCtx[0].Size/2U]);
       uint8_t a,b;

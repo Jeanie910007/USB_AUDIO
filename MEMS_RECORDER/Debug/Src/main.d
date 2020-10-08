@@ -1,4 +1,5 @@
 Src/main.o: ../Src/main.c \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/main.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/cube_hal.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/stm32f4xx_hal_conf.h \
@@ -32,6 +33,7 @@ Src/main.o: ../Src/main.c \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
@@ -54,7 +56,11 @@ Src/main.o: ../Src/main.c \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/cca02m1_conf.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/nucleo_f401re_bus.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/nucleo_f401re_errno.h \
- C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Middlewares/ST/STM32_Audio/Addons/PDM/Inc/pdm2pcm_glo.h
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Middlewares/ST/STM32_Audio/Addons/PDM/Inc/pdm2pcm_glo.h \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/usart.h \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/main.h
+
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/main.h:
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/cube_hal.h:
 
@@ -122,6 +128,8 @@ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_H
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h:
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h:
@@ -167,3 +175,7 @@ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/nucleo_f401re_b
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/nucleo_f401re_errno.h:
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Middlewares/ST/STM32_Audio/Addons/PDM/Inc/pdm2pcm_glo.h:
+
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/usart.h:
+
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/main.h:
