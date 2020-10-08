@@ -47,6 +47,7 @@
 */
 USBD_HandleTypeDef hUSBDDevice;
 extern USBD_AUDIO_ItfTypeDef  USBD_AUDIO_fops;
+
 /**
 * @}
 */
@@ -60,7 +61,7 @@ int __io_putchar(int ch)
 int i ;
 int ball=0;
 int abc = 0;
-uint16_t* data[9600];
+int16_t data[9600];
 /** @defgroup MAIN_Private_Functions
 * @{
 */
@@ -68,6 +69,7 @@ uint16_t* data[9600];
 /**
 * @}
 */
+#define fiftheen 32768
 typedef union {
   unsigned long l;
   unsigned char c[4];
@@ -77,6 +79,10 @@ typedef union {
   uint16_t sixteen;
   uint8_t eight[2];
 } Data_trans;
+
+float out=0.0;
+extern uint16_t PCM_Buffer[((AUDIO_IN_CHANNELS*AUDIO_IN_SAMPLING_FREQUENCY)/1000)  * N_MS ];
+
 /**
 * @brief  Main program
 * @param  None
@@ -106,7 +112,7 @@ int main(void)
   USBD_Start(&hUSBDDevice);
 
   MX_USART1_UART_Init();
-  Data_trans st;
+//  Data_trans st;
 //  	EndianTest et;
 //    et.l = 0x12345678;
 //    printf("本系統位元組順序為：\r\n");
@@ -134,8 +140,10 @@ int main(void)
 	  {
 		  for(i=0;i<9600;i++)
 		  {
-			  st.sixteen = *data[i];
-			  printf("%d %x%x\r\n",i,st.eight[1],st.eight[0]);
+//			  st.sixteen = *data[i];
+//			  printf("%d %x%x\r\n",i,st.eight[1],st.eight[0]);
+			  out = (float)data[i];
+			  printf("%d %f\r\n",i,out/fiftheen);
 			  HAL_Delay(10);
 		  }
 		  abc++;

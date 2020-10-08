@@ -44,7 +44,8 @@ extern int ball;
 */
 uint16_t PDM_Buffer[((((AUDIO_IN_CHANNELS * AUDIO_IN_SAMPLING_FREQUENCY) / 1000) * MAX_DECIMATION_FACTOR) / 16)* N_MS ];
 uint16_t PCM_Buffer[((AUDIO_IN_CHANNELS*AUDIO_IN_SAMPLING_FREQUENCY)/1000)  * N_MS ];
-extern uint16_t* data[9600];
+int16_t PCM_Buffer_int[((AUDIO_IN_CHANNELS*AUDIO_IN_SAMPLING_FREQUENCY)/1000)  * N_MS ];
+extern int16_t data[9600];
 CCA02M1_AUDIO_Init_t MicParams;
 
 /**
@@ -96,18 +97,31 @@ void CCA02M1_AUDIO_IN_TransferComplete_CallBack(uint32_t Instance)
 extern int abc;
 int i;
 int j = 0;
+int jj = 0;
 
 void AudioProcess(void)
 {
-	if(abc<9600)
+	if (jj<3000)
+	{
+		CCA02M1_AUDIO_IN_PDMToPCM(CCA02M1_AUDIO_INSTANCE,(uint16_t * )PDM_Buffer,PCM_Buffer);
+		Send_Audio_to_USB((int16_t *)PCM_Buffer, (AUDIO_IN_SAMPLING_FREQUENCY/1000)*AUDIO_IN_CHANNELS * N_MS );
+		jj++;
+	}
+	else if(abc<9600)
 	{
 		j=0;
 		CCA02M1_AUDIO_IN_PDMToPCM(CCA02M1_AUDIO_INSTANCE,(uint16_t * )PDM_Buffer,PCM_Buffer);
 		for (i = abc;i<abc+96;i++)
 		{
-			* (data+i) = (uint16_t * )(PCM_Buffer+j);
+			(data[i]) = (int16_t * )(PCM_Buffer[j]);
+
+			PCM_Buffer_int[j]=(int16_t * ) PCM_Buffer[j];
 			j++;
 		}
+//		for (i = 0;i<96;i++)
+//		{
+//			PCM_Buffer_int[i]=(int16_t * ) PCM_Buffer[i];
+//		}
 		Send_Audio_to_USB((int16_t *)PCM_Buffer, (AUDIO_IN_SAMPLING_FREQUENCY/1000)*AUDIO_IN_CHANNELS * N_MS );
 		abc+=96;
 	}
