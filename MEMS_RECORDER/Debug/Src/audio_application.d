@@ -30,6 +30,8 @@ Src/audio_application.o: ../Src/audio_application.c \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2s_ex.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sai.h \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sai_ex.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
@@ -55,7 +57,9 @@ Src/audio_application.o: ../Src/audio_application.c \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/cca02m1_conf.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/nucleo_f401re_bus.h \
  C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/nucleo_f401re_errno.h \
- C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Middlewares/ST/STM32_Audio/Addons/PDM/Inc/pdm2pcm_glo.h
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Middlewares/ST/STM32_Audio/Addons/PDM/Inc/pdm2pcm_glo.h \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/sai.h \
+ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/main.h
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/audio_application.h:
 
@@ -119,6 +123,10 @@ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_H
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sai.h:
+
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sai_ex.h:
+
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h:
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
@@ -170,3 +178,7 @@ C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/nucleo_f401re_b
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/nucleo_f401re_errno.h:
 
 C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Middlewares/ST/STM32_Audio/Addons/PDM/Inc/pdm2pcm_glo.h:
+
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/sai.h:
+
+C:/Users/10007069/STM32CubeIDE/workspace_1.0.2/MEMS_RECORDER/Inc/main.h:

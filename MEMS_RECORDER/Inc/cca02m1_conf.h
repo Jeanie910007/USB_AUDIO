@@ -46,7 +46,7 @@ modification in the application layer developed with the older versions of the d
 #define AUDIO_IN_SAMPLING_FREQUENCY 48000
 
 #define AUDIO_IN_BUFFER_SIZE            DEFAULT_AUDIO_IN_BUFFER_SIZE  
-#define AUDIO_VOLUME_INPUT              64U
+#define AUDIO_VOLUME_INPUT              60U
 #define CCA02M1_AUDIO_INSTANCE 0U
 #define CCA02M1_AUDIO_IN_IT_PRIORITY    6U
 

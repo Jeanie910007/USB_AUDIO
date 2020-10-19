@@ -61,7 +61,7 @@ int __io_putchar(int ch)
 int i ;
 int ball=0;
 int abc = 0;
-int16_t data[9600];
+int16_t data[3200];
 /** @defgroup MAIN_Private_Functions
 * @{
 */
@@ -70,15 +70,7 @@ int16_t data[9600];
 * @}
 */
 #define fiftheen 32768
-typedef union {
-  unsigned long l;
-  unsigned char c[4];
-} EndianTest;
 
-typedef union {
-  uint16_t sixteen;
-  uint8_t eight[2];
-} Data_trans;
 
 float out=0.0;
 extern uint16_t PCM_Buffer[((AUDIO_IN_CHANNELS*AUDIO_IN_SAMPLING_FREQUENCY)/1000)  * N_MS ];
@@ -101,7 +93,9 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
   /* Initialize USB descriptor basing on channels number and sampling frequency */
+
   USBD_AUDIO_Init_Microphone_Descriptor(&hUSBDDevice, AUDIO_IN_SAMPLING_FREQUENCY, AUDIO_IN_CHANNELS);
+  // USBD_AUDIO_Init_Microphone_Descriptor(&hUSBDDevice, AUDIO_IN_SAMPLING_FREQUENCY, 2);
   /* Init Device Library */
   USBD_Init(&hUSBDDevice, &AUDIO_Desc, 0);
   /* Add Supported Class */
@@ -112,33 +106,23 @@ int main(void)
   USBD_Start(&hUSBDDevice);
 
   MX_USART1_UART_Init();
-//  Data_trans st;
-//  	EndianTest et;
-//    et.l = 0x12345678;
-//    printf("本系統位元組順序為：\r\n");
-//    if (et.c[0] == 0x78 && et.c[1] == 0x56 && et.c[2] == 0x34 && et.c[3] == 0x12) {
-//      printf("Little Endiann\r\n");
-//    } else if (et.c[0] == 0x12 && et.c[1] == 0x34 && et.c[2] == 0x56 && et.c[3] == 0x78) {
-//      printf("Big Endiann\r\n");
-//    } else {
-//      printf("Unknown Endiann\r\n");
-//    }
-//    printf("0x%lX 在記憶體中的儲存順序：\r\n", et.l);
-//    for (int i = 0; i < 4; i++) {
-//      printf("%p : 0x%02Xn\r\n", &et.c[i], et.c[i]);
-//    }
-//      printf("%X\r\n",et.l);
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_SAI1_Init();
+
 
   /* Start audio acquisition and streaming */
 #ifdef DISABLE_USB_DRIVEN_ACQUISITION
+
   Init_Acquisition_Peripherals(AUDIO_IN_SAMPLING_FREQUENCY, AUDIO_IN_CHANNELS, 0);
+  // Init_Acquisition_Peripherals(AUDIO_IN_SAMPLING_FREQUENCY, 2, 0);
   Start_Acquisition();
 #endif
   while (1)
   {
-	  if (abc == 9600)
+	  if (abc == 3200)
 	  {
-		  for(i=0;i<9600;i++)
+		  for(i=0;i<3200;i+=2)
 		  {
 //			  st.sixteen = *data[i];
 //			  printf("%d %x%x\r\n",i,st.eight[1],st.eight[0]);

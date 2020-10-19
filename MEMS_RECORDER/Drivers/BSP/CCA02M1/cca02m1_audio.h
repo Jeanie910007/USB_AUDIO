@@ -519,7 +519,8 @@ int32_t CCA02M1_AUDIO_IN_DeInit(uint32_t Instance);
 int32_t CCA02M1_AUDIO_IN_RegisterDefaultMspCallbacks (uint32_t Instance);
 int32_t CCA02M1_AUDIO_IN_RegisterMspCallbacks (uint32_t Instance, CCA02M1_AUDIO_IN_Cb_t *CallBacks);
 #endif /* ((USE_HAL_DFSDM_REGISTER_CALLBACKS == 1U) || (USE_HAL_SAI_REGISTER_CALLBACKS == 1U)) */
-int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf, uint32_t NbrOfBytes);
+// int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf, uint32_t NbrOfBytes);
+int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf1, uint8_t* pBuf2, uint32_t NbrOfBytes);
 int32_t CCA02M1_AUDIO_IN_Stop(uint32_t Instance);
 int32_t CCA02M1_AUDIO_IN_Pause(uint32_t Instance);
 int32_t CCA02M1_AUDIO_IN_Resume(uint32_t Instance);

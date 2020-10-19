@@ -21,7 +21,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "audio_application.h"
+#include "sai.h"
 #include <math.h>
+#define SaturaLH(N, L, H) (((N)<(L))?(L):(((N)>(H))?(H):(N)))
+extern int aaa;
 extern int ball;
 /** @addtogroup X_CUBE_MEMSMIC1_Applications
 * @{
@@ -42,10 +45,13 @@ extern int ball;
 /** @defgroup AUDIO_APPLICATION_Exported_Variables 
 * @{
 */
-uint16_t PDM_Buffer[((((AUDIO_IN_CHANNELS * AUDIO_IN_SAMPLING_FREQUENCY) / 1000) * MAX_DECIMATION_FACTOR) / 16)* N_MS ];
+// uint16_t PDM_Buffer[((((AUDIO_IN_CHANNELS * AUDIO_IN_SAMPLING_FREQUENCY) / 1000) * MAX_DECIMATION_FACTOR) / 16)* N_MS ];
+uint16_t PDM_Buffer12[((((AUDIO_IN_CHANNELS * AUDIO_IN_SAMPLING_FREQUENCY) / 1000) * MAX_DECIMATION_FACTOR) / 16)* N_MS ];
+uint16_t PDM_Buffer34[((((AUDIO_IN_CHANNELS * AUDIO_IN_SAMPLING_FREQUENCY) / 1000) * MAX_DECIMATION_FACTOR) / 16)* N_MS ];
 uint16_t PCM_Buffer[((AUDIO_IN_CHANNELS*AUDIO_IN_SAMPLING_FREQUENCY)/1000)  * N_MS ];
+int16_t PCM_Buffer2[((AUDIO_IN_CHANNELS*AUDIO_IN_SAMPLING_FREQUENCY)/1000)  * N_MS ];
 int16_t PCM_Buffer_int[((AUDIO_IN_CHANNELS*AUDIO_IN_SAMPLING_FREQUENCY)/1000)  * N_MS ];
-extern int16_t data[9600];
+extern int16_t data[3200];
 CCA02M1_AUDIO_Init_t MicParams;
 
 /**
@@ -81,7 +87,11 @@ void CCA02M1_AUDIO_IN_HalfTransfer_CallBack(uint32_t Instance)
 */
 void CCA02M1_AUDIO_IN_TransferComplete_CallBack(uint32_t Instance)
 {  
-  AudioProcess();
+  AudioProcess();		
+//  if (HAL_SAI_Transmit_DMA(&hsai_BlockA1,(uint8_t *)&PCM_Buffer[0],64) != HAL_OK)
+//		{
+//			aaa =33;
+//		}
 }
 
 /**
@@ -101,30 +111,40 @@ int jj = 0;
 
 void AudioProcess(void)
 {
-	if (jj<3000)
-	{
-		CCA02M1_AUDIO_IN_PDMToPCM(CCA02M1_AUDIO_INSTANCE,(uint16_t * )PDM_Buffer,PCM_Buffer);
-		Send_Audio_to_USB((int16_t *)PCM_Buffer, (AUDIO_IN_SAMPLING_FREQUENCY/1000)*AUDIO_IN_CHANNELS * N_MS );
-		jj++;
-	}
-	else if(abc<9600)
-	{
-		j=0;
-		CCA02M1_AUDIO_IN_PDMToPCM(CCA02M1_AUDIO_INSTANCE,(uint16_t * )PDM_Buffer,PCM_Buffer);
-		for (i = abc;i<abc+96;i++)
-		{
-			(data[i]) = (int16_t * )(PCM_Buffer[j]);
+//	if (jj<1000)
+//	{
+		CCA02M1_AUDIO_IN_PDMToPCM(CCA02M1_AUDIO_INSTANCE,(uint16_t * )PDM_Buffer34,PCM_Buffer);
+		 for(i = 0; i < 96; i++)
+         {
+//         PCM_Buffer2[i]     =  SaturaLH((((int8_t) PCM_Buffer[i])>>1), -32768, 32767);
+         PCM_Buffer2[i]     =  (int16_t)PCM_Buffer[i] >>1;
+         }
 
-			PCM_Buffer_int[j]=(int16_t * ) PCM_Buffer[j];
-			j++;
-		}
-//		for (i = 0;i<96;i++)
+		Send_Audio_to_USB((int16_t *)PCM_Buffer2, (AUDIO_IN_SAMPLING_FREQUENCY/1000)*AUDIO_IN_CHANNELS * N_MS );
+		// if (HAL_SAI_Transmit_DMA(&hsai_BlockA1,(uint8_t *)&PCM_Buffer[0],64) != HAL_OK)
+		// {
+		// 	aaa =33;
+		// }
+//		jj++;
+//	}
+//	else if(abc<3200)
+//	{
+//		j=0;
+//		CCA02M1_AUDIO_IN_PDMToPCM(CCA02M1_AUDIO_INSTANCE,(uint16_t * )PDM_Buffer12,PCM_Buffer);
+//		for (i = abc;i<abc+64;i++)
 //		{
-//			PCM_Buffer_int[i]=(int16_t * ) PCM_Buffer[i];
+//			(data[i]) = (int16_t * )(PCM_Buffer[j]);
+//
+//			PCM_Buffer_int[j]=(int16_t * ) PCM_Buffer[j];
+//			j++;
 //		}
-		Send_Audio_to_USB((int16_t *)PCM_Buffer, (AUDIO_IN_SAMPLING_FREQUENCY/1000)*AUDIO_IN_CHANNELS * N_MS );
-		abc+=96;
-	}
+////		for (i = 0;i<96;i++)
+////		{
+////			PCM_Buffer_int[i]=(int16_t * ) PCM_Buffer[i];
+////		}
+////		Send_Audio_to_USB((int16_t *)PCM_Buffer, (AUDIO_IN_SAMPLING_FREQUENCY/1000)*AUDIO_IN_CHANNELS * N_MS );
+//		abc+=32;
+//	}
 }
 
 /**
@@ -156,7 +176,7 @@ void Init_Acquisition_Peripherals(uint32_t AudioFreq, uint32_t ChnlNbrIn, uint32
 */
 void Start_Acquisition(void)
 {  
-  CCA02M1_AUDIO_IN_Record(CCA02M1_AUDIO_INSTANCE, (uint8_t *) PDM_Buffer, AUDIO_IN_BUFFER_SIZE);
+  CCA02M1_AUDIO_IN_Record(CCA02M1_AUDIO_INSTANCE, (uint8_t *) PDM_Buffer12, (uint8_t *) PDM_Buffer34, AUDIO_IN_BUFFER_SIZE);
 }
 /**
 * @}

@@ -24,7 +24,7 @@
 #include "cca02m1_audio.h"
 #include "cca02m1_conf.h"
 #include "audio.h"
-
+int aaa = 0;
 #ifndef USE_STM32L4XX_NUCLEO
 #include "arm_math.h"
 #endif
@@ -111,6 +111,7 @@
   */
 /* Recording context */
 AUDIO_IN_Ctx_t                         AudioInCtx[AUDIO_IN_INSTANCES_NBR] = {0};
+AUDIO_IN_Ctx_t                         AudioInCtx2[AUDIO_IN_INSTANCES_NBR] = {0};
 
 /**
   * @}
@@ -235,6 +236,298 @@ static void SPI_MspInit(SPI_HandleTypeDef *hspi);
 * @param  AudioInit Init structure
 * @retval BSP status
 */
+// __weak int32_t CCA02M1_AUDIO_IN_Init(uint32_t Instance, CCA02M1_AUDIO_Init_t* AudioInit)
+// {
+//   int32_t ret =  BSP_ERROR_NONE;
+  
+//   if(Instance >= AUDIO_IN_INSTANCES_NBR)
+//   {
+//     ret = BSP_ERROR_WRONG_PARAM;  
+//   }
+//   else
+//   {
+//     /* Store the audio record context */
+//     AudioInCtx[Instance].Device          = AudioInit->Device;
+//     AudioInCtx[Instance].ChannelsNbr     = AudioInit->ChannelsNbr;  
+//     AudioInCtx[Instance].SampleRate      = AudioInit->SampleRate; 
+//     AudioInCtx[Instance].BitsPerSample   = AudioInit->BitsPerSample;
+//     AudioInCtx[Instance].Volume          = AudioInit->Volume;
+//     AudioInCtx[Instance].State           = AUDIO_IN_STATE_RESET;
+    
+//     if(Instance == 0U)
+//     { 
+// #ifdef USE_STM32L4XX_NUCLEO
+//       ret =  BSP_ERROR_WRONG_PARAM;
+// #else
+//       uint32_t PDM_Clock_Freq;     
+      
+//       switch (AudioInit->SampleRate)
+//       {
+//       case AUDIO_FREQUENCY_8K:
+//         PDM_Clock_Freq = 1280;
+//         break;
+        
+//       case AUDIO_FREQUENCY_16K:
+//         PDM_Clock_Freq = PDM_FREQ_16K;
+//         break;
+        
+//       case AUDIO_FREQUENCY_32K:
+//         PDM_Clock_Freq = 2048;
+//         break;
+        
+//       case AUDIO_FREQUENCY_48K:
+//         PDM_Clock_Freq = 3072;
+//         break;
+        
+//       default:
+//         PDM_Clock_Freq = 1280;
+//         ret =  BSP_ERROR_WRONG_PARAM;
+//         break;
+//       }
+      
+//       AudioInCtx[Instance].DecimationFactor = (PDM_Clock_Freq * 1000U)/AudioInit->SampleRate;
+//       AudioInCtx[Instance].Size = (PDM_Clock_Freq/8U) * 2U * N_MS_PER_INTERRUPT;
+      
+// #ifdef USE_STM32WBXX_NUCLEO /* CCA02M1 can support ONLY 1 mic with STM32WB. No other configs are available */
+      
+//       /* Initialize SAI */
+//       __HAL_SAI_RESET_HANDLE_STATE(&hAudioInSai);
+      
+//       /* PLL clock is set depending by the AudioFreq */ 
+//       if(MX_SAI_ClockConfig(&hAudioInSai, PDM_Clock_Freq) != HAL_OK)
+//       {
+//         ret =  BSP_ERROR_CLOCK_FAILURE;
+//       }
+      
+//       if(HAL_SAI_GetState(&hAudioInSai) == HAL_SAI_STATE_RESET)
+//       {
+//         SAI_MspInit(&hAudioInSai);
+//       }
+      
+//       hAudioInSai.Instance = AUDIO_IN_SAI_INSTANCE;
+//       __HAL_SAI_DISABLE(&hAudioInSai);
+      
+//       hAudioInSai.Init.Protocol = SAI_FREE_PROTOCOL;
+//       hAudioInSai.Init.AudioMode      = SAI_MODEMASTER_RX;
+//       hAudioInSai.Init.DataSize = SAI_DATASIZE_16;
+//       hAudioInSai.Init.FirstBit       = SAI_FIRSTBIT_MSB;
+//       hAudioInSai.Init.ClockStrobing  = SAI_CLOCKSTROBING_FALLINGEDGE;
+//       hAudioInSai.Init.Synchro = SAI_ASYNCHRONOUS;
+//       hAudioInSai.Init.OutputDrive = SAI_OUTPUTDRIVE_DISABLE;
+//       hAudioInSai.Init.NoDivider = SAI_MASTERDIVIDER_DISABLE;
+//       hAudioInSai.Init.MckOverSampling = SAI_MCK_OVERSAMPLING_DISABLE;
+//       hAudioInSai.Init.FIFOThreshold = SAI_FIFOTHRESHOLD_EMPTY;
+//       hAudioInSai.Init.AudioFrequency = SAI_AUDIO_FREQUENCY_MCKDIV;
+//       hAudioInSai.Init.Mckdiv = SAI_DIVIDER(AudioInCtx[Instance].SampleRate);
+//       hAudioInSai.Init.SynchroExt = SAI_SYNCEXT_DISABLE;
+//       hAudioInSai.Init.MonoStereoMode = SAI_STEREOMODE;
+//       hAudioInSai.Init.CompandingMode = SAI_NOCOMPANDING;
+//       hAudioInSai.Init.PdmInit.Activation = DISABLE;
+//       hAudioInSai.Init.PdmInit.MicPairsNbr = 0;
+//       hAudioInSai.Init.PdmInit.ClockEnable = SAI_PDM_CLOCK1_ENABLE;
+//       hAudioInSai.FrameInit.FrameLength       = 32;
+//       hAudioInSai.FrameInit.ActiveFrameLength = 1;
+//       hAudioInSai.FrameInit.FSDefinition = SAI_FS_STARTFRAME;
+//       hAudioInSai.FrameInit.FSPolarity        = SAI_FS_ACTIVE_LOW;
+//       hAudioInSai.FrameInit.FSOffset = SAI_FS_FIRSTBIT;
+//       hAudioInSai.SlotInit.FirstBitOffset = 0;
+//       hAudioInSai.SlotInit.SlotSize       = SAI_SLOTSIZE_DATASIZE;
+//       hAudioInSai.SlotInit.SlotNumber     = 2; 
+//       hAudioInSai.SlotInit.SlotActive = 0x00000003;
+      
+//       if (HAL_SAI_Init(&hAudioInSai) != HAL_OK)
+//       {
+//         ret =  BSP_ERROR_PERIPH_FAILURE;
+//       }
+      
+//       /* Enable SAI to generate clock used by audio driver */
+//       __HAL_SAI_ENABLE(&hAudioInSai);
+      
+// #else             
+//       MX_I2S_IN_Config i2s_config;
+//       if(AudioInCtx[0].ChannelsNbr == 1U)
+//       {
+//         i2s_config.DataFormat   = I2S_DATAFORMAT_16B;
+//       }
+//       else
+//       {
+//         i2s_config.DataFormat   = I2S_DATAFORMAT_32B;
+//       }
+      
+//       i2s_config.AudioFreq = ((PDM_Clock_Freq * 1000U) / 32U);
+//       i2s_config.CPOL         = I2S_CPOL_HIGH;
+//       i2s_config.MCLKOutput   = I2S_MCLKOUTPUT_DISABLE;
+//       i2s_config.Mode         = I2S_MODE_MASTER_RX;
+//       i2s_config.Standard     = I2S_STANDARD_MSB;
+// #ifdef USE_STM32F4XX_NUCLEO
+//       i2s_config.FullDuplexMode   = I2S_FULLDUPLEXMODE_DISABLE;
+//       i2s_config.ClockSource  = I2S_CLOCK_PLL;
+// #else
+//       i2s_config.ClockSource  = I2S_CLOCK_SYSCLK;
+// #endif
+      
+//       if (AudioInCtx[0].ChannelsNbr>1U)
+//       {
+//         PDM_Clock_Freq *=2U;
+//         if (AUDIO_IN_Timer_Init() != HAL_OK)
+//         {
+//           ret =  BSP_ERROR_PERIPH_FAILURE;
+//         }
+//       }
+      
+//       /* PLL clock is set depending by the AudioFreq */ 
+//       if(MX_I2S_IN_ClockConfig(&hAudioInI2s, PDM_Clock_Freq) != HAL_OK)
+//       {
+//         ret =  BSP_ERROR_CLOCK_FAILURE;
+//       }
+      
+//       /* I2S Peripheral configuration */
+//       hAudioInI2s.Instance          = AUDIO_IN_I2S_INSTANCE;
+//       __HAL_I2S_DISABLE(&hAudioInI2s);
+//       I2S_MspInit(&hAudioInI2s);
+      
+//       if (MX_I2S_IN_Init(&hAudioInI2s, &i2s_config)!= HAL_OK)
+//       {
+//         ret =  BSP_ERROR_PERIPH_FAILURE;
+//       }
+//       if (HAL_I2S_Init(&hAudioInI2s) != HAL_OK)
+//       {
+//         ret =  BSP_ERROR_PERIPH_FAILURE;
+//       }
+      
+//       if (AudioInCtx[0].ChannelsNbr>2U)
+//       {
+//         /* Set the SPI parameters */
+//         hAudioInSPI.Instance               = AUDIO_IN_SPI_INSTANCE;
+        
+//         __HAL_SPI_DISABLE(&hAudioInSPI);
+//         SPI_MspInit(&hAudioInSPI);
+        
+//         MX_SPI_Config spi_config;
+//         spi_config.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+//         spi_config.Direction         = SPI_DIRECTION_2LINES_RXONLY;
+//         spi_config.CLKPhase          = SPI_PHASE_2EDGE;
+//         spi_config.CLKPolarity       = SPI_POLARITY_HIGH;
+//         spi_config.CRCCalculation    = SPI_CRCCALCULATION_DISABLED;
+//         spi_config.CRCPolynomial     = 7;
+//         spi_config.DataSize          = SPI_DATASIZE_16BIT;
+//         spi_config.FirstBit          = SPI_FIRSTBIT_MSB;
+//         spi_config.NSS               = SPI_NSS_SOFT;
+//         spi_config.TIMode            = SPI_TIMODE_DISABLED;
+//         spi_config.Mode              = SPI_MODE_SLAVE;
+        
+//         if (MX_SPI_Init(&hAudioInSPI, &spi_config)!= HAL_OK)
+//         {
+//           ret =  BSP_ERROR_PERIPH_FAILURE;
+//         }
+//         if (HAL_SPI_Init(&hAudioInSPI) != HAL_OK)
+//         {
+//           ret =  BSP_ERROR_PERIPH_FAILURE;
+//         }
+        
+//       }
+// #endif
+//       if (CCA02M1_AUDIO_IN_PDMToPCM_Init(Instance, AudioInCtx[0].SampleRate, AudioInCtx[0].ChannelsNbr, AudioInCtx[0].ChannelsNbr)!= BSP_ERROR_NONE)
+//       {
+//         ret =  BSP_ERROR_NO_INIT;
+//       }
+      
+//       // if (CCA02M1_AUDIO_IN_SetVolume(Instance, 4))
+//       // {
+//       //   ret =  BSP_ERROR_NO_INIT;
+//       // }
+// #endif
+//     }
+//     else if(Instance == 1U)
+//     {
+// #ifdef USE_STM32L4XX_NUCLEO
+      
+//       int8_t i; 
+//       DFSDM_Filter_TypeDef* FilterInstnace[4] = {AUDIO_DFSDMx_MIC1_FILTER, AUDIO_DFSDMx_MIC2_FILTER, AUDIO_DFSDMx_MIC3_FILTER, AUDIO_DFSDMx_MIC4_FILTER};  
+//       DFSDM_Channel_TypeDef* ChannelInstance[4] = {AUDIO_DFSDMx_MIC1_CHANNEL, AUDIO_DFSDMx_MIC2_CHANNEL, AUDIO_DFSDMx_MIC3_CHANNEL, AUDIO_DFSDMx_MIC4_CHANNEL};
+//       uint32_t DigitalMicPins[4] = {DFSDM_CHANNEL_SAME_CHANNEL_PINS, DFSDM_CHANNEL_FOLLOWING_CHANNEL_PINS, DFSDM_CHANNEL_SAME_CHANNEL_PINS, DFSDM_CHANNEL_FOLLOWING_CHANNEL_PINS};
+//       uint32_t DigitalMicType[4] = {DFSDM_CHANNEL_SPI_RISING, DFSDM_CHANNEL_SPI_FALLING, DFSDM_CHANNEL_SPI_RISING, DFSDM_CHANNEL_SPI_FALLING};
+//       uint32_t Channel4Filter[4] = {AUDIO_DFSDMx_MIC1_CHANNEL_FOR_FILTER, AUDIO_DFSDMx_MIC2_CHANNEL_FOR_FILTER, AUDIO_DFSDMx_MIC3_CHANNEL_FOR_FILTER, AUDIO_DFSDMx_MIC4_CHANNEL_FOR_FILTER};
+//       MX_DFSDM_Config dfsdm_config;
+      
+//       /* PLL clock is set depending on the AudioFreq (44.1khz vs 48khz groups) */
+//       if(MX_DFSDM1_ClockConfig(&hAudioInDfsdmChannel[0], AudioInit->SampleRate) != HAL_OK)
+//       {
+//         ret =  BSP_ERROR_CLOCK_FAILURE;
+//       }
+      
+// #if (USE_HAL_DFSDM_REGISTER_CALLBACKS == 1U)      
+//       /* Register the default DFSDM MSP callbacks */
+//       if(AudioInCtx[Instance].IsMspCallbacksValid == 0U)
+//       {
+//         if(CCA02M1_AUDIO_IN_RegisterDefaultMspCallbacks(Instance) != BSP_ERROR_NONE)
+//         {
+//           ret =  BSP_ERROR_PERIPH_FAILURE;
+//         }
+//       }
+// #else
+//       DFSDM_FilterMspInit(&hAudioInDfsdmFilter[1]);      
+//       DFSDM_ChannelMspInit(&hAudioInDfsdmChannel[1]);
+// #endif /* (USE_HAL_DFSDM_REGISTER_CALLBACKS == 1U) */
+      
+//       for(i = 0; i < DFSDM_MIC_NUMBER; i ++)
+//       {
+//         dfsdm_config.FilterInstance  = FilterInstnace[i];
+//         dfsdm_config.ChannelInstance = ChannelInstance[i];
+//         dfsdm_config.DigitalMicPins  = DigitalMicPins[i];
+//         dfsdm_config.DigitalMicType  = DigitalMicType[i];
+//         dfsdm_config.Channel4Filter  = Channel4Filter[i];
+//         if((i == 0) && (AudioInCtx[Instance].Device == AUDIO_IN_DIGITAL_MIC))
+//         {
+//           dfsdm_config.RegularTrigger = DFSDM_FILTER_SW_TRIGGER;    
+//         } 
+//         else
+//         {
+//           dfsdm_config.RegularTrigger = DFSDM_FILTER_SYNC_TRIGGER;
+//         }
+//         dfsdm_config.SincOrder       = DFSDM_FILTER_ORDER(AudioInCtx[Instance].SampleRate);
+//         dfsdm_config.Oversampling    = DFSDM_OVER_SAMPLING(AudioInCtx[Instance].SampleRate);
+//         dfsdm_config.ClockDivider    = DFSDM_CLOCK_DIVIDER(AudioInCtx[Instance].SampleRate);
+//         dfsdm_config.RightBitShift   = DFSDM_MIC_BIT_SHIFT(AudioInCtx[Instance].SampleRate);
+        
+//         if(((AudioInit->Device >> (uint8_t)i) & AUDIO_IN_DIGITAL_MIC1) == AUDIO_IN_DIGITAL_MIC1)
+//         {
+//           /* Default configuration of DFSDM filters and channels */
+//           if(MX_DFSDM1_Init(&hAudioInDfsdmFilter[i], &hAudioInDfsdmChannel[i], &dfsdm_config) != HAL_OK)
+//           {
+//             /* Return BSP_ERROR_PERIPH_FAILURE when operations are not correctly done */
+//             ret =  BSP_ERROR_PERIPH_FAILURE;
+//           }
+          
+// #if (USE_HAL_DFSDM_REGISTER_CALLBACKS == 1U)
+//           /* Register filter regular conversion callbacks */
+//           if(HAL_DFSDM_FILTER_RegisterCallback(&hAudioInDfsdmFilter[i], HAL_DFSDM_FILTER_REG_COMPLETE_CB_ID, DFSDM_FilterRegConvCpltCallback) != HAL_OK)
+//           {
+//             ret =  BSP_ERROR_PERIPH_FAILURE;
+//           }  
+//           if(HAL_DFSDM_FILTER_RegisterCallback(&hAudioInDfsdmFilter[i], HAL_DFSDM_FILTER_REG_HALFCOMPLETE_CB_ID, DFSDM_FilterRegConvHalfCpltCallback) != HAL_OK)
+//           {
+//             ret =  BSP_ERROR_PERIPH_FAILURE;
+//           }
+// #endif /* (USE_HAL_DFSDM_REGISTER_CALLBACKS == 1U) */
+//         }
+//       }
+// #else
+//       ret =  BSP_ERROR_WRONG_PARAM;
+// #endif
+//     }
+//     else /* Instance = 2 */
+//     {      
+      
+//     }
+    
+//     /* Update BSP AUDIO IN state */     
+//     AudioInCtx[Instance].State = AUDIO_IN_STATE_STOP; 
+//     /* Return BSP status */ 
+//   }
+//   return ret;
+// }
+
 __weak int32_t CCA02M1_AUDIO_IN_Init(uint32_t Instance, CCA02M1_AUDIO_Init_t* AudioInit)
 {
   int32_t ret =  BSP_ERROR_NONE;
@@ -253,6 +546,14 @@ __weak int32_t CCA02M1_AUDIO_IN_Init(uint32_t Instance, CCA02M1_AUDIO_Init_t* Au
     AudioInCtx[Instance].Volume          = AudioInit->Volume;
     AudioInCtx[Instance].State           = AUDIO_IN_STATE_RESET;
     
+    
+    AudioInCtx2[Instance].Device          = AudioInit->Device;
+    AudioInCtx2[Instance].ChannelsNbr     = AudioInit->ChannelsNbr;  
+    AudioInCtx2[Instance].SampleRate      = AudioInit->SampleRate; 
+    AudioInCtx2[Instance].BitsPerSample   = AudioInit->BitsPerSample;
+    AudioInCtx2[Instance].Volume          = AudioInit->Volume;
+    AudioInCtx2[Instance].State           = AUDIO_IN_STATE_RESET;
+
     if(Instance == 0U)
     { 
 #ifdef USE_STM32L4XX_NUCLEO
@@ -286,7 +587,9 @@ __weak int32_t CCA02M1_AUDIO_IN_Init(uint32_t Instance, CCA02M1_AUDIO_Init_t* Au
       
       AudioInCtx[Instance].DecimationFactor = (PDM_Clock_Freq * 1000U)/AudioInit->SampleRate;
       AudioInCtx[Instance].Size = (PDM_Clock_Freq/8U) * 2U * N_MS_PER_INTERRUPT;
-      
+
+      AudioInCtx2[Instance].DecimationFactor = (PDM_Clock_Freq * 1000U)/AudioInit->SampleRate;
+      AudioInCtx2[Instance].Size = (PDM_Clock_Freq/8U) * 2U * N_MS_PER_INTERRUPT;     
 #ifdef USE_STM32WBXX_NUCLEO /* CCA02M1 can support ONLY 1 mic with STM32WB. No other configs are available */
       
       /* Initialize SAI */
@@ -394,7 +697,7 @@ __weak int32_t CCA02M1_AUDIO_IN_Init(uint32_t Instance, CCA02M1_AUDIO_Init_t* Au
         ret =  BSP_ERROR_PERIPH_FAILURE;
       }
       
-      if (AudioInCtx[0].ChannelsNbr>2U)
+      if (AudioInCtx[0].ChannelsNbr>1U)
       {
         /* Set the SPI parameters */
         hAudioInSPI.Instance               = AUDIO_IN_SPI_INSTANCE;
@@ -430,6 +733,11 @@ __weak int32_t CCA02M1_AUDIO_IN_Init(uint32_t Instance, CCA02M1_AUDIO_Init_t* Au
       {
         ret =  BSP_ERROR_NO_INIT;
       }
+      
+      // if (CCA02M1_AUDIO_IN_SetVolume(Instance, 4))
+      // {
+      //   ret =  BSP_ERROR_NO_INIT;
+      // }
 #endif
     }
     else if(Instance == 1U)
@@ -521,6 +829,9 @@ __weak int32_t CCA02M1_AUDIO_IN_Init(uint32_t Instance, CCA02M1_AUDIO_Init_t* Au
   }
   return ret;
 }
+
+
+
 
 /**
 * @brief  Deinit the audio IN peripherals.
@@ -1077,7 +1388,7 @@ __weak HAL_StatusTypeDef MX_I2S_IN_Init(I2S_HandleTypeDef* hi2s, MX_I2S_IN_Confi
 * @param  ChnlNbrOut Number of desired output audio channels in the  resulting PCM buffer
 * @retval BSP status
 */
-__weak int32_t CCA02M1_AUDIO_IN_PDMToPCM_Init(uint32_t Instance, uint32_t AudioFreq, uint32_t ChnlNbrIn, uint32_t ChnlNbrOut)
+int32_t CCA02M1_AUDIO_IN_PDMToPCM_Init(uint32_t Instance, uint32_t AudioFreq, uint32_t ChnlNbrIn, uint32_t ChnlNbrOut)
 {
   int32_t ret =  BSP_ERROR_NONE;
   
@@ -1117,7 +1428,7 @@ __weak int32_t CCA02M1_AUDIO_IN_PDMToPCM_Init(uint32_t Instance, uint32_t AudioF
       
       /* PDM lib config phase */
       PDM_FilterConfig[index].output_samples_number = (uint16_t) ((AudioFreq/1000U) * N_MS_PER_INTERRUPT);
-      PDM_FilterConfig[index].mic_gain = 24;
+      PDM_FilterConfig[index].mic_gain = 50;
       
       switch (AudioInCtx[0].DecimationFactor)
       {
@@ -1165,6 +1476,7 @@ __weak int32_t CCA02M1_AUDIO_IN_PDMToPCM_Init(uint32_t Instance, uint32_t AudioF
       {
         ret =  BSP_ERROR_NO_INIT;
       }
+      // CCA02M1_AUDIO_IN_SetVolume(Instance, 0);
     }
     
 #endif
@@ -1231,7 +1543,89 @@ __weak int32_t CCA02M1_AUDIO_IN_PDMToPCM(uint32_t Instance, uint16_t *PDMBuf, ui
 * @param  NbrOfBytes     Size of the record buffer. Parameter not used when Instance is 0
 * @retval BSP status
 */
-int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf, uint32_t NbrOfBytes)
+// int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf, uint32_t NbrOfBytes)
+// {
+//   int32_t ret = BSP_ERROR_NONE;
+  
+//   if(Instance >= (AUDIO_IN_INSTANCES_NBR - 1U) )
+//   {
+//     ret = BSP_ERROR_WRONG_PARAM;
+//   }
+//   else 
+//   {
+//     AudioInCtx[Instance].pBuff = (uint16_t*)pBuf;
+    
+//     if(Instance == 0U)
+//     {
+//       UNUSED(NbrOfBytes);
+      
+// #ifdef USE_STM32L4XX_NUCLEO
+//       ret = BSP_ERROR_WRONG_PARAM;
+// #else
+      
+// #ifdef USE_STM32WBXX_NUCLEO
+      
+//       if(HAL_SAI_Receive_DMA(&hAudioInSai, (uint8_t *)SAI_InternalBuffer, (uint16_t)AudioInCtx[Instance].Size/2U) != HAL_OK)
+//       {
+//         ret = BSP_ERROR_PERIPH_FAILURE;
+//       }  
+      
+// #else
+      
+//       if(AudioInCtx[Instance].ChannelsNbr > 2U)
+//       {
+//         if(HAL_SPI_Receive_DMA(&hAudioInSPI, (uint8_t *)SPI_InternalBuffer, (uint16_t)AudioInCtx[Instance].Size) != HAL_OK)
+//         {
+//           ret = BSP_ERROR_PERIPH_FAILURE;
+//         }
+//       }
+      
+//       if(AudioInCtx[Instance].ChannelsNbr != 1U)
+//       {
+//         if(AUDIO_IN_Timer_Start() != HAL_OK)
+//         {
+//           ret = BSP_ERROR_PERIPH_FAILURE;
+//         }
+//       }
+      
+//       if(HAL_I2S_Receive_DMA(&hAudioInI2s, I2S_InternalBuffer, (uint16_t)AudioInCtx[Instance].Size/2U) != HAL_OK)
+//       {
+//         ret = BSP_ERROR_PERIPH_FAILURE;
+//       }
+      
+// #endif
+      
+//       /* Update BSP AUDIO IN state */     
+//       AudioInCtx[Instance].State = AUDIO_IN_STATE_RECORDING;
+      
+// #endif
+      
+//     }
+//     else
+//     {
+// #ifdef USE_STM32L4XX_NUCLEO      
+//       int32_t counter;  
+      
+//       for (counter = (int32_t)(AudioInCtx[Instance].ChannelsNbr); counter > 0; counter --)
+//       {
+//         if(HAL_DFSDM_FilterRegularStart_DMA(&hAudioInDfsdmFilter[counter-1], MicRecBuff[counter-1], NbrOfBytes) != HAL_OK)  
+//         {
+//           ret = BSP_ERROR_PERIPH_FAILURE;
+//         }
+//       }
+//       /* Update BSP AUDIO IN state */     
+//       AudioInCtx[Instance].State = AUDIO_IN_STATE_RECORDING;
+      
+// #else
+//       ret = BSP_ERROR_WRONG_PARAM;
+// #endif
+//     }
+//   }
+//   /* Return BSP status */
+//   return ret;
+// }
+
+int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf1, uint8_t* pBuf2, uint32_t NbrOfBytes)
 {
   int32_t ret = BSP_ERROR_NONE;
   
@@ -1241,7 +1635,8 @@ int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf, uint32_t NbrOf
   }
   else 
   {
-    AudioInCtx[Instance].pBuff = (uint16_t*)pBuf;
+    AudioInCtx[Instance].pBuff = (uint16_t*)pBuf1;
+    AudioInCtx2[Instance].pBuff = (uint16_t*)pBuf2;
     
     if(Instance == 0U)
     {
@@ -1260,13 +1655,13 @@ int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf, uint32_t NbrOf
       
 #else
       
-      if(AudioInCtx[Instance].ChannelsNbr > 2U)
-      {
-        if(HAL_SPI_Receive_DMA(&hAudioInSPI, (uint8_t *)SPI_InternalBuffer, (uint16_t)AudioInCtx[Instance].Size) != HAL_OK)
-        {
-          ret = BSP_ERROR_PERIPH_FAILURE;
-        }
-      }
+      // if(AudioInCtx[Instance].ChannelsNbr > 2U)
+      // {
+      //   if(HAL_SPI_Receive_DMA(&hAudioInSPI, (uint8_t *)SPI_InternalBuffer, (uint16_t)AudioInCtx2[Instance].Size) != HAL_OK)
+      //   {
+      //     ret = BSP_ERROR_PERIPH_FAILURE;
+      //   }
+      // }
       
       if(AudioInCtx[Instance].ChannelsNbr != 1U)
       {
@@ -1281,10 +1676,16 @@ int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf, uint32_t NbrOf
         ret = BSP_ERROR_PERIPH_FAILURE;
       }
       
+      if(HAL_SPI_Receive_DMA(&hAudioInSPI, (uint8_t *)SPI_InternalBuffer, (uint16_t)AudioInCtx2[Instance].Size) != HAL_OK)
+      {
+        ret = BSP_ERROR_PERIPH_FAILURE;
+      }
+
 #endif
       
       /* Update BSP AUDIO IN state */     
       AudioInCtx[Instance].State = AUDIO_IN_STATE_RECORDING;
+      AudioInCtx2[Instance].State = AUDIO_IN_STATE_RECORDING;
       
 #endif
       
@@ -1312,6 +1713,8 @@ int32_t CCA02M1_AUDIO_IN_Record(uint32_t Instance, uint8_t* pBuf, uint32_t NbrOf
   /* Return BSP status */
   return ret;
 }
+
+
 
 /**
 * @brief  Stop audio recording.
@@ -2316,13 +2719,13 @@ void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
     
   case 2: //PDM Signal
     {      
-      uint16_t * DataTempI2S = &(I2S_InternalBuffer[AudioInCtx[0].Size/2U]);
+      uint16_t * DataTempI2S = &(I2S_InternalBuffer[AudioInCtx2[0].Size/2U]);
       uint8_t a,b;
-      for(index=0; index<(AudioInCtx[0].Size/2U); index++) {
+      for(index=0; index<(AudioInCtx2[0].Size/2U); index++) {
         a = ((uint8_t *)(DataTempI2S))[(index*2U)];
         b = ((uint8_t *)(DataTempI2S))[(index*2U)+1U];
-        ((uint8_t *)(AudioInCtx[0].pBuff))[(index*2U)] = Channel_Demux[a & CHANNEL_DEMUX_MASK] | (Channel_Demux[b & CHANNEL_DEMUX_MASK] << 4);;
-        ((uint8_t *)(AudioInCtx[0].pBuff))[(index*2U)+1U] = Channel_Demux[(a>>1) & CHANNEL_DEMUX_MASK] | (Channel_Demux[(b>>1) & CHANNEL_DEMUX_MASK] << 4);
+        ((uint8_t *)(AudioInCtx2[0].pBuff))[(index*2U)] = Channel_Demux[a & CHANNEL_DEMUX_MASK] | (Channel_Demux[b & CHANNEL_DEMUX_MASK] << 4);;
+        ((uint8_t *)(AudioInCtx2[0].pBuff))[(index*2U)+1U] = Channel_Demux[(a>>1) & CHANNEL_DEMUX_MASK] | (Channel_Demux[(b>>1) & CHANNEL_DEMUX_MASK] << 4);
       }
       break;
     }    
@@ -2385,12 +2788,12 @@ void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
     {      
       uint16_t * DataTempI2S = I2S_InternalBuffer;
       uint8_t a,b;
-      for(index=0; index<(AudioInCtx[0].Size/2U); index++) {
+      for(index=0; index<(AudioInCtx2[0].Size/2U); index++) {
         a = ((uint8_t *)(DataTempI2S))[(index*2U)];
         b = ((uint8_t *)(DataTempI2S))[(index*2U)+1U];
-        ((uint8_t *)(AudioInCtx[0].pBuff))[(index*2U)] = Channel_Demux[a & CHANNEL_DEMUX_MASK] |
+        ((uint8_t *)(AudioInCtx2[0].pBuff))[(index*2U)] = Channel_Demux[a & CHANNEL_DEMUX_MASK] |
           (Channel_Demux[b & CHANNEL_DEMUX_MASK] << 4);;
-          ((uint8_t *)(AudioInCtx[0].pBuff))[(index*2U)+1U] = Channel_Demux[(a>>1) & CHANNEL_DEMUX_MASK] |
+          ((uint8_t *)(AudioInCtx2[0].pBuff))[(index*2U)+1U] = Channel_Demux[(a>>1) & CHANNEL_DEMUX_MASK] |
             (Channel_Demux[(b>>1) & CHANNEL_DEMUX_MASK] << 4);
       }      
       break;
