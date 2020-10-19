@@ -120,18 +120,18 @@ int main(void)
 #endif
   while (1)
   {
-	  if (abc == 3200)
-	  {
-		  for(i=0;i<3200;i+=2)
-		  {
-//			  st.sixteen = *data[i];
-//			  printf("%d %x%x\r\n",i,st.eight[1],st.eight[0]);
-			  out = (float)data[i];
-			  printf("%d %f\r\n",i,out/fiftheen);
-			  HAL_Delay(10);
-		  }
-		  abc++;
-	  }
+// 	  if (abc == 3200)
+// 	  {
+// 		  for(i=0;i<3200;i+=2)
+// 		  {
+// //			  st.sixteen = *data[i];
+// //			  printf("%d %x%x\r\n",i,st.eight[1],st.eight[0]);
+// 			  out = (float)data[i];
+// 			  printf("%d %f\r\n",i,out/fiftheen);
+// 			  HAL_Delay(10);
+// 		  }
+// 		  abc++;
+// 	  }
   }
 }
 
